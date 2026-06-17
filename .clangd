@@ -1,0 +1,7 @@
+CompileFlags:
+  CompilationDatabase: build
+  Add:
+    - "-IC:/vcpkg/installed/x64-windows/include"
+  Remove:
+    - "-external:I*"
+    - "/external:I*"
