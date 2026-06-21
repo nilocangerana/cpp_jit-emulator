@@ -4,10 +4,10 @@
 
 class Memory{
     public:
-        void DefineRomMemory(const std::vector<uint8_t>& memory);
+        explicit Memory(std::vector<uint8_t> rom_instructions);
 
         uint8_t Read(size_t address) const;
-        void Write(size_t address, uint8_t value); // optional but useful later
+        void Write(size_t address, uint8_t value);
 
     private:
         //uint8_t -> unsigned int, range: 0 -> 255 == 1 byte != (int == 4 bytes)

@@ -4,9 +4,9 @@
 #include <windows.h>
 #include <iostream>
 
-void Manual_CPU::SetMemory(Memory* mem)
+Manual_CPU::Manual_CPU(Memory& mem) : memory(mem) 
 {
-    memory = mem;
+
 }
 
 //Executes.
@@ -43,11 +43,11 @@ JitFunc Manual_CPU::CompileBlock(size_t pc){
 
     //Read opcode -> generate machine code.
     while(true){
-        uint8_t opcode = memory->Read(pc++); //read instruction and increment later.
+        uint8_t opcode = memory.Read(pc++); //read instruction and increment later.
 
         switch(opcode){
             case 0x01:{ //LOAD A, value
-                uint8_t value = memory->Read(pc++); //read value and increment later.
+                uint8_t value = memory.Read(pc++); //read value and increment later.
                                       
                 //mov eax, value == (0x01 5 -> mov eax, 5) . eax = x86 CPU register. On x86 [mov eax, imm32] encode as [B8 xx xx xx xx]
                 *cursor++ = 0xB8; //[B8][2?][3?][4?][5?] - cursor at 2. Dereferences cursor, Writes 0xB8 at current cursor position, increment cursor by 1 byte later.
@@ -60,7 +60,7 @@ JitFunc Manual_CPU::CompileBlock(size_t pc){
             }
 
             case 0x02: { //ADD A, value
-                uint8_t value = memory->Read(pc++); //read value
+                uint8_t value = memory.Read(pc++); //read value
 
                 //add eax, value
                 *cursor++ = 0x05; //[add eax, imm32] encode as [05 xx xx xx xx]

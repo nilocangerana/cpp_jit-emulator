@@ -7,15 +7,15 @@ class Memory;
 
 class Manual_CPU : public ICPU{
     public:
+        explicit Manual_CPU(Memory& mem);
         void Run() override;
         
-        void SetMemory(Memory* mem);
     private:
-        Memory* memory = nullptr;
+        Memory& memory;
 
-        //size_t -> unsigned int, range 4(32-bit) to 8 bytes(64-bit)
+        //size_t -> unsigned int, range 4(32-bit arch.) / 8 bytes(64-bit arch.) / holds maximum value.
         std::unordered_map<size_t, JitFunc> cache;
 
         void* AllocateExecutableMemory(size_t size) override;
         JitFunc CompileBlock(size_t pc) override;
-};  
+};

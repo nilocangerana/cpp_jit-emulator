@@ -1,6 +1,7 @@
 #pragma once
 
-using JitFunc = int(*)(); //defining int(*)() as JitFunc. Pointer to a no param function. returns int.
+//defining int(*)() as JitFunc. Pointer to a func param(). returns int.
+using JitFunc = int(*)();
 
 class ICPU{
     public:

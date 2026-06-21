@@ -1,10 +1,12 @@
 #include "emulator.h"
+#include "memory.h"
 
-Emulator::Emulator(const std::vector<uint8_t>& rom_memory){
-    //Fake Rom memory = [0x01][0x05][0x02][0x07][0xFF]
-    memory.DefineRomMemory(rom_memory);
+//Copy of rom_memory is made inside the emulator constructor.
+//move: transforms into rvalue, Memory class receives a value.
+Emulator::Emulator(std::vector<uint8_t> rom_memory) 
+: memory(std::move(rom_memory)), cpu(memory)
+{
 
-    cpu.SetMemory(&memory);
 }
 
 void Emulator::Run()

@@ -1,8 +1,10 @@
 #include "memory.h"
 #include <stdexcept>
 
-void Memory::DefineRomMemory(const std::vector<uint8_t>& rom_memory){
-    this->rom_memory = rom_memory; //copy data into Memory class.
+Memory::Memory(std::vector<uint8_t> rom_instructions) 
+: rom_memory(std::move(rom_instructions))
+{
+
 }
 
 uint8_t Memory::Read(size_t address) const {
