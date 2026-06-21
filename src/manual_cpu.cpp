@@ -1,18 +1,16 @@
-#include "raw_emulator.h"
+#include "manual_cpu.h"
+#include "memory.h"
+
 #include <windows.h>
 #include <iostream>
 
-Raw_Emulator::Raw_Emulator(){
-    //Fake Rom memory = [0x01][0x05][0x02][0x07][0xFF]
-    memory={
-        0x01, 0, //LOAD A, 5
-        0x02, 5, //ADD A, 7
-        0xFF //HALT
-    };
+void Manual_CPU::SetMemory(Memory* mem)
+{
+    memory = mem;
 }
 
 //Executes.
-void Raw_Emulator::Run(){
+void Manual_CPU::Run(){
     size_t pc = 0;
 
     while(true) {
@@ -33,23 +31,23 @@ void Raw_Emulator::Run(){
 
 //Allocates "size" of memory(Bytes). Windows OS API, OS gives a block o memory.
 //PAGE_EXECUTE_READWRITE: memory is data + executable code
-void* Raw_Emulator::AllocateExecutableMemory(size_t size){
+void* Manual_CPU::AllocateExecutableMemory(size_t size){
     return VirtualAlloc(nullptr, size, MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);
 }
 
 //Compile the instructions into a JitFunc. Compile a block of instructions starting at PC until stop point. Converts local opcode to actual machine opcode instructions.
-JitFunc Raw_Emulator::CompileBlock(size_t pc){
+JitFunc Manual_CPU::CompileBlock(size_t pc){
     //Allocates memory for the code, cursor starts at the start of memory.
     uint8_t* code = (uint8_t*)AllocateExecutableMemory(1024);
     uint8_t* cursor = code;
 
     //Read opcode -> generate machine code.
     while(true){
-        uint8_t opcode = memory[pc++]; //read instruction and increment later.
+        uint8_t opcode = memory->Read(pc++); //read instruction and increment later.
 
         switch(opcode){
             case 0x01:{ //LOAD A, value
-                uint8_t value = memory[pc++]; //read value and increment later.
+                uint8_t value = memory->Read(pc++); //read value and increment later.
                                       
                 //mov eax, value == (0x01 5 -> mov eax, 5) . eax = x86 CPU register. On x86 [mov eax, imm32] encode as [B8 xx xx xx xx]
                 *cursor++ = 0xB8; //[B8][2?][3?][4?][5?] - cursor at 2. Dereferences cursor, Writes 0xB8 at current cursor position, increment cursor by 1 byte later.
@@ -62,7 +60,7 @@ JitFunc Raw_Emulator::CompileBlock(size_t pc){
             }
 
             case 0x02: { //ADD A, value
-                uint8_t value = memory[pc++]; //read value
+                uint8_t value = memory->Read(pc++); //read value
 
                 //add eax, value
                 *cursor++ = 0x05; //[add eax, imm32] encode as [05 xx xx xx xx]
