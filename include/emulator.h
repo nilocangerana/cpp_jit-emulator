@@ -1,5 +1,6 @@
 #pragma once
 
+#include "emulator_cpu.h"
 #include "memory.h"
 #include "manual_cpu.h"
 
@@ -18,5 +19,6 @@ class Emulator{
 
         private:
             Memory memory;
-            Manual_CPU cpu;
+            //Manual_CPU cpu;
+            Emulator_CPU cpu;
 };

@@ -16,16 +16,14 @@ void Manual_CPU::Run(){
     while(true) {
         //Check if code is already compiled at this (pc). If true, reuse, if false, compile.
         if(cache.find(pc) == cache.end()){
-            cache[pc] = CompileBlock(pc);
+            cache[pc] = Manual_CompileBlock(pc);
         }
 
-        JitFunc func = cache[pc]; //Get the cached Jit compiled code.
+        Manual_JitFunc func = cache[pc]; //Get the cached Jit compiled code.
 
         int result = func(); //Executes.
 
         std::cout << "Result (A): " << result << std::endl;
-
-        break;
     }
 }
 
@@ -36,7 +34,7 @@ void* Manual_CPU::AllocateExecutableMemory(size_t size){
 }
 
 //Compile the instructions into a JitFunc. Compile a block of instructions starting at PC until stop point. Converts local opcode to actual machine opcode instructions.
-JitFunc Manual_CPU::CompileBlock(size_t pc){
+Manual_JitFunc Manual_CPU::Manual_CompileBlock(size_t pc){
     //Allocates memory for the code, cursor starts at the start of memory.
     uint8_t* code = (uint8_t*)AllocateExecutableMemory(1024);
     uint8_t* cursor = code;
@@ -81,5 +79,5 @@ JitFunc Manual_CPU::CompileBlock(size_t pc){
     }
 
     done:
-        return (JitFunc)code;
+        return (Manual_JitFunc)code;
 }

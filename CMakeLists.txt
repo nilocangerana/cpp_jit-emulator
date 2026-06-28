@@ -11,6 +11,7 @@ add_executable(emu
     src/emulator.cpp
     src/manual_cpu.cpp
     src/memory.cpp
+    src/emulator_cpu.cpp
 )
 
 target_include_directories(emu PRIVATE include)
