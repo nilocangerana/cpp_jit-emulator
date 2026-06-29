@@ -1,8 +1,9 @@
 #pragma once
 
 #include "emulator_cpu.h"
+//#include "manual_cpu.h"
+
 #include "memory.h"
-#include "manual_cpu.h"
 
 // [main] rom (lvalue)
 //    ↓ move

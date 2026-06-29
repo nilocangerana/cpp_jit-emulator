@@ -1,10 +1,10 @@
 #pragma once
 
-#include "cpu_registers.h"
+//#include "cpu_registers.h"
 
 //defining int(*)() as JitFunc. Pointer to a func param(). returns int.
-using Manual_JitFunc = int(*)();
-using JitFunc = size_t(*)(CPURegisters*);
+//using Manual_JitFunc = int(*)();
+//using JitFunc = size_t(*)(CPURegisters*);
 
 class ICPU{
     public:

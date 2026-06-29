@@ -1,9 +1,12 @@
 #pragma once
 
 #include "icpu.h"
+#include "cpu_registers.h"
 #include <unordered_map>
 
 class Memory;
+
+using JitFunc = size_t(*)(CPURegisters*);
 
 class Emulator_CPU : public ICPU{
     public:
