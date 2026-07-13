@@ -1,10 +1,5 @@
 #pragma once
 
-//#include "cpu_registers.h"
-
-//defining int(*)() as JitFunc. Pointer to a func param(). returns int.
-//using Manual_JitFunc = int(*)();
-//using JitFunc = size_t(*)(CPURegisters*);
 
 class ICPU{
     public:
@@ -12,9 +7,9 @@ class ICPU{
 
         virtual void* AllocateExecutableMemory(size_t size) = 0;
 
-        //Compiling Blocks.
-        //virtual JitFunc CompileBlock(size_t pc) = 0; //emulate registers
-        //virtual Manual_JitFunc Manual_CompileBlock(size_t pc) = 0; //real register assignments
-
         virtual void Run() = 0;
+
+        //Block size worst case: 32 instructions × ~20 bytes ≈ 640 bytes + safety margin
+        const size_t MAX_BLOCK_BYTES = 1024;
+        const int MAX_BLOCK_INSTRUCTIONS = 32;
 };
